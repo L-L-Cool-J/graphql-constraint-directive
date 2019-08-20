@@ -4,7 +4,9 @@ const {
   GraphQLInt,
   GraphQLFloat,
   GraphQLNonNull,
-  GraphQLString
+  GraphQLString,
+  isWrappingType,
+  isNamedType
 } = require('graphql')
 const { SchemaDirectiveVisitor } = require('graphql-tools')
 const ConstraintStringType = require('./scalars/string')
@@ -60,6 +62,17 @@ class ConstraintDirective extends SchemaDirectiveVisitor {
       field.type = new ConstraintNumberType(fieldName, field.type, this.args)
     } else {
       throw new Error(`Not a scalar type: ${field.type}`)
+    }
+
+    const typeMap = this.schema.getTypeMap();
+    let type = field.type;
+
+    if (isWrappingType(type)) {
+      type = type.ofType;
+    }
+
+    if (isNamedType(type) && !typeMap[type.name]) {
+      typeMap[type.name] = type;
     }
   }
 }
