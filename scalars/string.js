@@ -1,6 +1,7 @@
 const { GraphQLScalarType } = require('graphql')
 const { contains, isLength } = require('validator')
 const formats = require('./formats')
+const XRegExp = require('xregexp')
 const ValidationError = require('../lib/error')
 const capitalized = require('../lib/capitalized')
 
@@ -69,7 +70,7 @@ function validate (fieldName, args, value) {
       [{ arg: 'notContains', value: args.notContains }])
   }
 
-  if (args.pattern && !new RegExp(args.pattern).test(value)) {
+  if (args.pattern && !XRegExp(args.pattern).test(value)) {
     throw new ValidationError(fieldName,
       `Must match ${args.pattern}`,
       [{ arg: 'pattern', value: args.pattern }])

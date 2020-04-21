@@ -40,7 +40,8 @@
   },
   "dependencies": {
     "graphql-tools": "^3.0.1",
-    "validator": "^10.2.0"
+    "validator": "^10.2.0",
+    "xregexp": "^4.3.0"
   },
   "peerDependencies": {
     "graphql": "^0.13.0"
